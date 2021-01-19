@@ -5,6 +5,6 @@ import com.outsidesource.outsidesourceweatherapp.R
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ForecastFragment: Fragment(R.layout.forecast_fragment) {
+class ForecastFragment: Fragment() {
     val viewModel: ForecastViewModel by viewModel()
 }
