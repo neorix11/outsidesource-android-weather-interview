@@ -1,20 +1,13 @@
 package com.outsidesource.outsidesourceweatherapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.compose.foundation.Text
-import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.setContent
+import com.outsidesource.outsidesourceweatherapp.ui.components.WeatherlyButton
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { TestText() }
+        setContent { WeatherlyButton("Get Weather", true) { println("CLICKED BUTTON") }}
     }
-}
-
-@Composable
-fun TestText() {
-    Text("THis is some text")
 }
