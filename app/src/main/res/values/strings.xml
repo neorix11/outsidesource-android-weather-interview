@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">OutsideSource Weather App</string>
+    <string name="login_screen">Login</string>
+    <string name="forecast_screen">Forecast</string>
 </resources>
