@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-String koin_version = "2.2.0"
+String koin_version = "2.2.2"
 
 android {
     compileSdkVersion 30
@@ -60,6 +60,8 @@ dependencies {
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-scope:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "org.koin:koin-androidx-compose:$koin_version"
+
 
     implementation "dev.chrisbanes.accompanist:accompanist-insets:0.4.2"
 

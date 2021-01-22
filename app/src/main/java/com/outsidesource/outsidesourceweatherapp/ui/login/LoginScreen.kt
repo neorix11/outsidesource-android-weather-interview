@@ -3,10 +3,11 @@ package com.outsidesource.outsidesourceweatherapp.ui.login
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -19,9 +20,17 @@ import com.outsidesource.outsidesourceweatherapp.R
 import com.outsidesource.outsidesourceweatherapp.ui.components.WeatherlyButton
 import com.outsidesource.outsidesourceweatherapp.ui.components.WeatherlyTextField
 import com.outsidesource.outsidesourceweatherapp.ui.theme.backgroundGradient
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun WeatherlyLogin() {
+fun WeatherlyLogin(
+    loginViewModel: LoginViewModel = getViewModel(),
+    onLoginSuccess: () -> Unit,
+) {
+
+    val openDialog = remember { mutableStateOf(false) }
+    val requester = remember { FocusRequester() }
+    val image = loadVectorResource(id = R.drawable.weatherly_logo)
 
     Column(
         modifier = Modifier
@@ -35,15 +44,13 @@ fun WeatherlyLogin() {
             )
     ) {
 
-        Spacer(modifier = Modifier.preferredHeight(100.dp))
-        val image = loadVectorResource(id = R.drawable.weatherly_logo)
+        Spacer(modifier = Modifier.preferredHeight(80.dp))
+
         image.resource.resource?.let {
             Image(imageVector = it, modifier = Modifier.fillMaxWidth())
         }
 
-        Spacer(modifier = Modifier.preferredHeight(100.dp))
-
-        val requester = remember { FocusRequester() }
+        Spacer(modifier = Modifier.preferredHeight(80.dp))
 
         WeatherlyTextField(
             placeholder = "Email",
@@ -58,9 +65,32 @@ fun WeatherlyLogin() {
             requestFocus = requester
         )
 
-        Spacer(modifier = Modifier.preferredHeight(200.dp))
+        Spacer(modifier = Modifier.preferredHeight(240.dp))
 
-        WeatherlyButton(text = "Login", onClick = { println("CLICKED") }, enabled = true)
+        WeatherlyButton(
+            text = "Login",
+            onClick = {
+                openDialog.value = true
+            },
+            enabled = true
+        )
 
+        if (openDialog.value) {
+            AlertDialog(
+                onDismissRequest = { openDialog.value = false },
+                title = { Text("Error") },
+                confirmButton = {
+                    Button(onClick = { openDialog.value = false }) {
+                        Text("Ok")
+                    }
+                }
+            )
+        }
     }
+}
+
+@Composable
+private fun ErrorAlert(error: String) {
+
+
 }
