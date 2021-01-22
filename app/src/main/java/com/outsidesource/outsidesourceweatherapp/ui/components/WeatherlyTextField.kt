@@ -6,6 +6,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -17,6 +18,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.outsidesource.outsidesourceweatherapp.models.Credentials
 
 @Composable
 fun WeatherlyTextField(
@@ -25,14 +27,15 @@ fun WeatherlyTextField(
     placeholder: String = "",
     textFieldType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
-    requestFocus: FocusRequester
+    requestFocus: FocusRequester,
+    textState: MutableState<String>
 ) {
     Row(
         Modifier
             .fillMaxWidth()
             .padding(start = 32.dp, end = 32.dp, top = 24.dp, bottom = 24.dp), horizontalArrangement = Arrangement.Center
     ) {
-        val textState = remember { mutableStateOf(TextFieldValue()) }
+
 
         TextField(
             keyboardOptions = KeyboardOptions(keyboardType = textFieldType, imeAction = imeAction),

@@ -17,9 +17,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.outsidesource.outsidesourceweatherapp.R
+import com.outsidesource.outsidesourceweatherapp.models.Credentials
 import com.outsidesource.outsidesourceweatherapp.ui.components.WeatherlyButton
 import com.outsidesource.outsidesourceweatherapp.ui.components.WeatherlyTextField
 import com.outsidesource.outsidesourceweatherapp.ui.theme.backgroundGradient
+import com.outsidesource.outsidesourceweatherapp.util.Outcome
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -31,6 +33,9 @@ fun WeatherlyLogin(
     val openDialog = remember { mutableStateOf(false) }
     val requester = remember { FocusRequester() }
     val image = loadVectorResource(id = R.drawable.weatherly_logo)
+    val emailTextState = remember { mutableStateOf("") }
+    val passwordTextState = remember { mutableStateOf("") }
+    val errorMessage = remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -56,13 +61,15 @@ fun WeatherlyLogin(
             placeholder = "Email",
             textFieldType = KeyboardType.Email,
             imeAction = ImeAction.Next,
-            requestFocus = requester
+            requestFocus = requester,
+            textState = emailTextState
         )
         WeatherlyTextField(
             placeholder = "Password",
             textFieldType = KeyboardType.Password,
             imeAction = ImeAction.Done,
-            requestFocus = requester
+            requestFocus = requester,
+            textState = passwordTextState
         )
 
         Spacer(modifier = Modifier.preferredHeight(240.dp))
@@ -70,7 +77,15 @@ fun WeatherlyLogin(
         WeatherlyButton(
             text = "Login",
             onClick = {
-                openDialog.value = true
+                when (val outcome = loginViewModel.authenticateUser(Credentials(emailTextState.value, passwordTextState.value))) {
+                    is Outcome.Ok -> {
+                        onLoginSuccess()
+                    }
+                    is Outcome.Error -> {
+                        errorMessage.value = outcome.error.toString()
+                        openDialog.value = true
+                    }
+                }
             },
             enabled = true
         )
@@ -79,6 +94,7 @@ fun WeatherlyLogin(
             AlertDialog(
                 onDismissRequest = { openDialog.value = false },
                 title = { Text("Error") },
+                text = { Text(errorMessage.value)},
                 confirmButton = {
                     Button(onClick = { openDialog.value = false }) {
                         Text("Ok")
@@ -87,10 +103,4 @@ fun WeatherlyLogin(
             )
         }
     }
-}
-
-@Composable
-private fun ErrorAlert(error: String) {
-
-
 }
